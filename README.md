@@ -63,7 +63,7 @@ docker run --rm --link falkodev-site-db:mongo --net siteperso -v $(pwd)/backup/d
 echo "Site started"
 ```
 
-Ici, on recrée le réseau de conteneur que nous avions vu dans [le billet précédent](/blog/dockeriser-et-deployer-une-app-node-1-2) et nous relançons un build en arrière-plan de l'image Docker contenant l'application.
+Ici, on recrée le réseau de conteneur que nous avions vu dans [le billet précédent](/dockeriser-et-deployer-une-app-node-1-2) et nous relançons un build en arrière-plan de l'image Docker contenant l'application.
 
 Au passage, une restauration d'une sauvegarde de la base de données permet de rafraîchir l'appli avec les données les plus récentes \(plus d'informations sur cette sauvegarde de BD dans la suite de l'article\).
 
