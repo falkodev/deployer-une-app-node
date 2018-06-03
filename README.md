@@ -91,7 +91,7 @@ mongodump --db site --out ~/site_perso/backup/db/latest/
 # save uploads and sync them to remote server
 chmod -R 755 public/uploads
 rsync -a --exclude='**/.DS_Store' public/uploads backup
-rsync -caPzy --no-relative --stats --human-readable -e "ssh -p 22 -l user" --exclude="**/.DS_Store" ./backup/uploads/ user@remote_server:/opt/stagecoach/apps/site/uploads/
+rsync -caPzy --no-relative --stats --human-readable -e "ssh -p 22 -l user" --exclude='**/.DS_Store' ./backup/uploads/ user@remote_server:/opt/stagecoach/apps/site/uploads/
 
 # clean data folder and regenerate public folder
 rm -rf data && rm -rf public
@@ -132,11 +132,11 @@ Puis, démarre une nouvelle instance :
 
 ![](/assets/start.png)
 
-On constate que par défaut, Stagecoach conserve les 5 derniers déploiements pour faire des rollbacks en cas de besoin. Voici sur mon site à quoi ressemble le répertoire `/opt/stagecoach/apps/site/deployments` par exemple :
+Par défaut, Stagecoach conserve les 5 derniers déploiements pour faire des rollbacks en cas de besoin. Voici sur mon site à quoi ressemble le répertoire `/opt/stagecoach/apps/site/deployments` par exemple :
 
 ![](/assets/deployments.png)
 
-On constate que Stagecoach crée un nouveau dossier à chaque déploiement avec la date et l'heure courantes, puis supprime les dossiers caduques. Il fait un lien symbolique entre le dossier le plus récent et un répertoire nommé `current` pour lequel contient la version de l'application à exécuter.
+On constate que Stagecoach crée un nouveau dossier à chaque déploiement avec la date et l'heure courantes, puis supprime les dossiers caducs. Il fait un lien symbolique entre le dossier le plus récent et un répertoire nommé `current` qui contient la version de l'application à exécuter.
 
 Voilà, j'espère que cet article en 2 parties vous aura aidé à appréhender la mise en pratique de Docker du poste de développement au serveur de production.
 
