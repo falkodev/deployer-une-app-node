@@ -14,7 +14,7 @@ L'installation du projet se déroule comme ceci :
 
 ```bash
 [on your development machine]
-cd
+cd /User/MYUSERNAME
 mkdir -p src
 cd src
 git clone https://github.com/punkave/stagecoach
@@ -91,7 +91,7 @@ mongodump --db site --out ~/site_perso/backup/db/latest/
 # save uploads and sync them to remote server
 chmod -R 755 public/uploads
 rsync -a --exclude='**/.DS_Store' public/uploads backup
-rsync -caPzy --no-relative --stats --human-readable -e "ssh -p 22 -l user" --exclude='**/.DS_Store' ./backup/uploads/ user@remote_server:/opt/stagecoach/apps/site/uploads/
+rsync -caPzy --no-relative --stats --human-readable -e "ssh -p 22 -l user" --exclude="**/.DS_Store" ./backup/uploads/ user@remote_server:/opt/stagecoach/apps/site/uploads/
 
 # clean data folder and regenerate public folder
 rm -rf data && rm -rf public
