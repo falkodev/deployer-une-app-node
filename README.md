@@ -50,7 +50,7 @@ docker network prune --force
 echo "Site stopped"
 ```
 
-A remarquer : nous supprimons au passage l'utilisation de `forever`. A chaque déploiement, Stagecoach joue d'abord le script `stop` pour arrêter l'instance en cours. Ici, nous arrêtons les images Docker de notre app et, pour sauvegarder de l'espace, nous supprimons les images et volumes Docker qui peuvent vitre prendre beaucoup de place après quelques déploiements.
+A remarquer : nous supprimons au passage l'utilisation de `forever`. A chaque déploiement, Stagecoach joue d'abord le script `stop` pour arrêter l'instance en cours. Ici, nous arrêtons les images Docker de notre app et, pour sauvegarder de l'espace, nous les supprimons, car cela peut prendre beaucoup de place après seulement quelques déploiements.
 
 Dans `start`, voici le contenu à mettre :
 
@@ -67,7 +67,7 @@ Ici, on recrée le réseau de conteneur que nous avions vu dans [le billet préc
 
 Enfin, une restauration d'une sauvegarde de la base de données permet de rafraîchir l'appli avec les données les plus récentes \(plus d'informations sur cette sauvegarde de BD dans la suite de l'article\).
 
-Le contenu de `before-connecting` sera succinct :
+Le contenu de `before-connecting` ne fait que démarrer un script :
 
 ```bash
 #!/bin/bash
@@ -122,7 +122,7 @@ rsync -a robots.txt dist/public
 
 ## Déploiement
 
-Il est temps de déployer l'application sur le serveur de production en exécutant la commande `sc-deploy production` dans le dossier de notre appli, sur la machine de développement. Il faut bien entendu avoir déjà un serveur avec un accès ssh paramétré et un utilisateur.
+Il est temps de déployer l'application sur le serveur de production en exécutant la commande `sc-deploy production` dans le dossier de notre appli, sur la machine de développement. Il faut bien entendu avoir déjà un serveur avec un accès ssh paramétré et un utilisateur configuré.
 
 Les scripts préparatoires se déroulent, puis Stagecoach envoie le contenu de `dist` sur le serveur et arrête l'instance précédente :
 
