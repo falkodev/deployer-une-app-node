@@ -6,7 +6,7 @@ Lorsque l'on a besoin de déployer souvent sur le serveur de production, mieux v
 
 Stagecoach permet de déployer des applications Node sur plusieurs serveurs \(staging, production..\) et de conserver des versions précédentes des déploiements pour revenir en arrière si nécessaire. Il s'occupe de faire la connexion avec le serveur, exécuter des scripts de pré et post-installation \(pour construire les ressources telles que les images, les fichiers CSS..\) et déposer notre application sur le serveur distant.
 
-Par défaut, il utilise `forever` pour redémarrer l'appli, mais comme nous utilisons Docker avec un restart automatique, nous allons modifier cet outil.
+Par défaut, il utilise `forever`, un package NPM qui surveille l'état d'un script, pour redémarrer l'appli, mais comme nous utilisons Docker avec un restart automatique de Nginx, nous allons modifier Stagecoach.
 
 ## Configuration
 
@@ -33,7 +33,7 @@ cp -r src/stagecoach/example/deployment src/YOURAPPHERE/deployment
 
 Ce dossier contient des exemples de configuration \(`settings.example` et `settings.production.example`\). Nous allons les copier et les nommer `settings` et `settings.production`. Là, c'est à vous de jouer pour mettre les bons paramètres \(IP du serveur, user, port, dossier de destination) mais les examples sont assez parlants et la doc aide bien.
 
-Dans ce dossier `deployment`, 3 scripts sont à modifier pour correspondre à notre app dockerisée : `stop`, `start` et `before-connecting`.
+Dans ce dossier `deployment`, 3 scripts sont à modifier pour notre app dockerisée : `stop`, `start` et `before-connecting`.
 
 Dans `stop`, nous allons remplacer le contenu existant par :
 
@@ -50,7 +50,7 @@ docker network prune --force
 echo "Site stopped"
 ```
 
-A remarquer : nous supprimons au passage l'utilisation de `forever`. A chaque déploiement, Stagecoach joue d'abord le script `stop` pour arrêter l'instance en cours. Ici, nous arrêtons les images Docker de notre app, et au passage, pour sauvegarder de l'espace, nous supprimons les images, volumes.. qui peuvent vitre prendre beaucoup de place après quelques déploiements.
+A remarquer : nous supprimons au passage l'utilisation de `forever`. A chaque déploiement, Stagecoach joue d'abord le script `stop` pour arrêter l'instance en cours. Ici, nous arrêtons les images Docker de notre app et, pour sauvegarder de l'espace, nous supprimons les images et volumes Docker qui peuvent vitre prendre beaucoup de place après quelques déploiements.
 
 Dans `start`, voici le contenu à mettre :
 
@@ -65,7 +65,7 @@ echo "Site started"
 
 Ici, on recrée le réseau de conteneur que nous avions vu dans [le billet précédent](/dockeriser-et-deployer-une-app-node-1-2) et nous relançons un build en arrière-plan de l'image Docker contenant l'application.
 
-Au passage, une restauration d'une sauvegarde de la base de données permet de rafraîchir l'appli avec les données les plus récentes \(plus d'informations sur cette sauvegarde de BD dans la suite de l'article\).
+Enfin, une restauration d'une sauvegarde de la base de données permet de rafraîchir l'appli avec les données les plus récentes \(plus d'informations sur cette sauvegarde de BD dans la suite de l'article\).
 
 Le contenu de `before-connecting` sera succinct :
 
@@ -132,11 +132,11 @@ Puis, démarre une nouvelle instance :
 
 ![](/assets/start.png)
 
-Par défaut, Stagecoach conserve les 5 derniers déploiements pour faire des rollbacks en cas de besoin. Voici sur mon site à quoi ressemble le répertoire `/opt/stagecoach/apps/site/deployments` par exemple :
+Par défaut, Stagecoach conserve les 5 derniers déploiements pour faire des rollbacks en cas de besoin. Voici sur mon serveur à quoi ressemble le répertoire `/opt/stagecoach/apps/site/deployments` par exemple :
 
 ![](/assets/deployments.png)
 
 On constate que Stagecoach crée un nouveau dossier à chaque déploiement avec la date et l'heure courantes, puis supprime les dossiers caducs. Il fait un lien symbolique entre le dossier le plus récent et un répertoire nommé `current` qui contient la version de l'application à exécuter.
 
-Voilà, j'espère que cet article en 2 parties vous aura aidé à appréhender la mise en pratique de Docker du poste de développement au serveur de production.
+Voilà, j'espère que cet article en 2 parties vous aura aidé à appréhender la mise en pratique de Docker, du poste de développement au serveur de production.
 
