@@ -35,7 +35,7 @@ Ce dossier contient des exemples de configuration \(`settings.example` et `setti
 
 Dans ce dossier `deployment`, 3 scripts sont à modifier pour notre app dockerisée : `stop`, `start` et `before-connecting`.
 
-Dans `stop`, nous allons remplacer le contenu existant par :
+Le contenu du script `stop` sera remplacé par :
 
 ```bash
 #!/bin/bash
